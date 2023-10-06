@@ -21,7 +21,7 @@ section1 = '\n\n' + '***********************************************************
 
 # If Lettering Mail file is prepared manually, set prepped to Y
 
-prepped = 'N'
+prepped = 'Y'
 
 # If file is coborrower set cobor to Y
 

@@ -166,28 +166,25 @@ def LetteringMail(mailFile, curr_dir, curr_date, prep):
                 'ItemizationType', 'ItemizationCreditorName', 'ItemizationDate', 'ItemizationBalance',
                 'ItemizationInterest', 'ItemizationFees', 'ItemizationPmtsCredits', 'ItemizationCurrBalance',
                 '40DaysLastLetter', 'Filler30', 'Filler31', 'DOFD', 'DateofAccident', 'AccidentInfo', 'County',
-                'StateofAccident', 'CRDeletionFlag', 'Filler38', 'Filler39', 'Filler40', 'Account Information*',
-                'Phone 1', 'Phone 2', 'CLT_CATEGORY', 'SSN', 'DBR_STATUS', 'CLT_NOTE_TO_COLL', 'CLT_SET_AUTH',
-                'ADR_CITY', 'ADR_STATE', 'ADR_ZIP_CODE', 'DBR_PRIORITY', 'DBR_ASSIGN_DATE_O',
-                'General_Offer_Last_Date', 'General_Offer', 'E_General_Offer', 'E_General_Offer_Last_Date',
-                'Validation_Offer_Date', 'DBR_LANGUAGE', 'Expiration_Date', 'Last_Letter_Date',
-                '1PayOffer_O', '3PayOffer_O', 'DBR_PRINCIPAL_DUE', 'UnitYield', 'Letter1',
-                'Letter2', 'send_letter']
+                'StateofAccident', 'CRDeletionFlag', 'Filler38', 'InterestPostChargeOff', 'ServiceChargesPostChargeOff',
+                'CollectonCostPostChargeOff', 'InterestAfterPlacement', 'ServiceChargesAfterPlacement',
+                'CollectonCostAfterPlacement', 'LastPayDate', 'Filler39', 'Filler40', 'DBR_PRIORITY', 'Letters_SIF_INV',
+                'Letter1', 'Letter2', 'send_letter']
 
     dataTypes = {'LetterCode': 'object', 'LetterDate': 'object', 'UnifinID': 'object',
                  'ClientReferenceNumber': 'object', 'OriginalAccountID': 'object',
                  'MailType': 'object', 'ClientAccountIDLabel': 'object',
-                 'ClientCode': 'object', 'DebtType': 'object',  # -------------- #
+                 'ClientCode': 'object', 'DebtType': 'object',
                  'InitialNoticeFlag': 'object', 'SendGLBNoticeFlag': 'object',
                  'OOSFlag': 'object', 'CRFlag': 'object', 'CRNegFlag': 'object',
                  'Sum3PayOffer': 'float64', 'Sum12PayOffer': 'float64',
                  'EmailAddress': 'object', 'ConsumerName': 'object',
                  'Address1': 'object', 'Address2': 'object',
                  'City': 'object', 'State': 'object', 'Zip': 'object',
-                 'ExperianAddress': 'int64', 'Filler8': 'float64',  # -------------- #
+                 'ExperianAddress': 'int64', 'Filler8': 'float64',
                  'Client Name': 'object', 'DebtDescription': 'object',
                  'CurrentCreditor': 'object', 'OriginalCreditor': 'object',
-                 'ServicerClientID': 'float64', 'Filler10': 'float64',  # -------------- #
+                 'ServicerClientID': 'float64', 'Filler10': 'float64',
                  'COAmountDue': 'float64', 'ChargeOffDate': 'object',
                  'AmountPaidSinceCO': 'float64', 'LastPaymentAmount': 'float64',
                  'LastPaymentDate': 'object', 'AmountDue': 'float64',
@@ -197,37 +194,28 @@ def LetteringMail(mailFile, curr_dir, curr_date, prep):
                  'Filler12': 'object', 'PatientName': 'float64',
                  'HospitalName': 'float64', 'HospitalAddress': 'float64',
                  'HospitalPhone': 'float64', '1PayOffer': 'float64',
-                 '3PayOffer': 'float64', 'SettlementOffer': 'float64',  # -------------- #
+                 '3PayOffer': 'float64', 'SettlementOffer': 'float64',
                  'SettlementDueDate': 'float64', 'Filler15': 'float64',
                  'Filler16': 'float64', 'AVSCardholderName': 'float64',
                  'AVSCardNumber': 'float64', 'AVSStreet': 'float64',
                  'ReceiptNumber': 'float64', 'TransactionDate': 'float64',
                  'TransactionAmount': 'float64', 'TransactionAcceptedAs': 'float64',
                  'TotalQuarterPaid': 'float64', 'DocketNo': 'object',
-                 'JudgementDate': 'object', 'JudgementCourt': 'object',  # -------------- #
+                 'JudgementDate': 'object', 'JudgementCourt': 'object',
                  'CustomFlag1': 'float64', 'ItemizationType': 'object',
                  'ItemizationCreditorName': 'object', 'ItemizationDate': 'object',
                  'ItemizationBalance': 'float64', 'ItemizationInterest': 'float64',
                  'ItemizationFees': 'float64', 'ItemizationPmtsCredits': 'float64',
                  'ItemizationCurrBalance': 'float64', '40DaysLastLetter': 'object',
                  'Filler30': 'int64', 'Filler31': 'float64', 'DOFD': 'object',
-                 'DateofAccident': 'float64', 'AccidentInfo': 'float64',  # -------------- #
-                 'County': 'float64', 'StateofAccident': 'float64',  # -------------- #
-                 'CRDeletionFlag': 'object', 'Filler38': 'float64',  # -------------- #
-                 'Filler39': 'float64', 'Filler40': 'float64',  # -------------- #
-                 'Account Information*': 'object', 'Phone 1': 'object',
-                 'Phone 2': 'object', 'CLT_CATEGORY': 'object',
-                 'SSN': 'object', 'DBR_STATUS': 'object',
-                 'CLT_NOTE_TO_COLL': 'object', 'CLT_SET_AUTH': 'object',
-                 'ADR_CITY': 'object', 'ADR_STATE': 'object',
-                 'ADR_ZIP_CODE': 'object', 'DBR_PRIORITY': 'object',
-                 'DBR_ASSIGN_DATE_O': 'object', 'General_Offer_Last_Date': 'object',
-                 'General_Offer': 'object', 'E_General_Offer': 'object',
-                 'E_General_Offer_Last_Date': 'object', 'Validation_Offer_Date': 'object',
-                 'DBR_LANGUAGE': 'object', 'Expiration_Date': 'object',
-                 'Last_Letter_Date': 'object', '1PayOffer_O': 'object',
-                 '3PayOffer_O': 'object', 'DBR_PRINCIPAL_DUE': 'object',
-                 'UnitYield': 'object', 'Letter1': 'object',
+                 'DateofAccident': 'float64', 'AccidentInfo': 'float64',
+                 'County': 'float64', 'StateofAccident': 'float64',
+                 'CRDeletionFlag': 'object', 'Filler38': 'float64',
+                 'InterestPostChargeOff': 'object', 'ServiceChargesPostChargeOff': 'object',
+                 'CollectonCostPostChargeOff': 'object', 'InterestAfterPlacement': 'object',
+                 'ServiceChargesAfterPlacement': 'object', 'CollectonCostAfterPlacement': 'object',
+                 'LastPayDate': 'object', 'Filler39': 'float64', 'Filler40': 'float64',
+                 'DBR_PRIORITY': 'object', 'Letters_SIF_INV': 'object', 'Letter1': 'object',
                  'Letter2': 'object', 'send_letter': 'object'}
 
 
@@ -313,6 +301,8 @@ def LetteringMail(mailFile, curr_dir, curr_date, prep):
 
     time.sleep(2)
 
+    updatedGroups = []
+
     for group, dfGroup in df.groupby(['LetterCode', 'ClientCode']):
 
         dfGroup = sif.SetSifValues1(group, dfGroup)
@@ -335,7 +325,7 @@ def LetteringMail(mailFile, curr_dir, curr_date, prep):
     print('Computing Values of Check Columns:'.center(60) + '\n')
     print('SettlementDueDate, Filler15'.center(60))
     print('Filler16, ReceiptNumber'.center(60))
-    print('TransactionDate, TransactionAmount')
+    print('TransactionDate, TransactionAmount'.center(60))
     print('TransactionAcceptedAs, Filler31'.center(60))
 
     time.sleep(2)
@@ -354,6 +344,3 @@ def LetteringMail(mailFile, curr_dir, curr_date, prep):
     df = qa.FullQA(df, curr_date)
     
     return df
-
-    
-

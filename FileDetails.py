@@ -12,8 +12,8 @@ section1 = '\n\n' + '***********************************************************
 
 # Mapping of EDI and administration drive on local machine
 
-mapAdmin = 'N'
-mapEDI = 'N'
+mapAdmin = 'Y'
+mapEDI = 'Y'
 
 # Drive name on which administration network drive is mapped
 
@@ -21,7 +21,7 @@ adminDrive = 'N'
 
 # Type in your username of local pc here
 
-user = 'MAQ'
+user = 'MUNEEB'
 
 
 ###########################################################################################
@@ -122,8 +122,8 @@ if mapAdmin == 'Y':
 
     # Path to TLO Address folder in vendor related
 
-    currTLO_dir = f'{adminDrive}:\\Vendor_Related\\Skip Tracing\\ \
-                TLO\\{cYear}\\Address\\{currTLOfolder}\\'
+    currTLO_dir = f'{adminDrive}:\\Vendor_Related\\Skip Tracing\\' \
+                f'TLO\\{cYear}\\Address\\{currTLOfolder}\\'
 
     # Path to TLO folder in FTP Transfers
 

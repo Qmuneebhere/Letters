@@ -247,81 +247,67 @@ def SQL_SIF(unifinIDs, group):
 #################################################################
 
 
-def SetSifValues1(unifinID, group, dfGroup):
+def SetSifValues1(group, dfGroup):
 
-    # unifinID is a boolean value, if its True
-    # Sif values are accessed using unifinID
+    # If unifinID is false, group will be a tuple
+    # Gets letter code and client code from group
 
-    if unifinID:
-        
-        # List of UnifinID's 
+    letterCode = group[0]
+    ClientCode = group[1]        
 
-        listID = dfGroup.index.tolist()
+    # Sets sif values for N001, N002, N002S, N021, N021S clients
+    # and blanks for groups other than the mentioned above.
 
-        # String of unifinIDs for SQL query
+    if letterCode in ['N001', 'N002', 'N002S']:
 
-        queryID = "'" + "','".join(listID) + "'"
+        sifValue = SifRules(('N002', ClientCode))
 
-        # Getting Dataframe for sif values
+    elif letterCode in ['N021', 'N021S']:
 
-        dfSIF = SQL_SIF(queryID, group)
+        sifValue = SifRules(('N021', ClientCode))
 
-        dfGroup['PatientName'] = dfSIF['SIF']
-
-        # converts PatientName column to float64
-
-        dfGroup['PatientName'] = pd.to_numeric(dfGroup['PatientName']).astype('float64')
-
-        # Sets value of Column HospitalAddress
-
-        dfGroup['HospitalAddress'] = dfGroup['AmountDue'] * dfGroup['PatientName']
-
-        # convert HospitalAddress column to four decimal places
-
-        dfGroup['HospitalAddress'] = dfGroup['HospitalAddress'].apply(lambda x: round(x, 4))
-
-        # Compares HospitalAddress and 1PayOffer (Same working as Filler15)
-
-        difference = abs(dfGroup['HospitalAddress'] - dfGroup['1PayOffer']) <= 0.01
-
-        if not difference.all():
-
-            print(section1)
-
-            print('Filler15 for Cavalry is not minimised. Check manually.'.center(60))
-
-            while True:
-
-                inp = input('\nPress (Y) to acknowledge: ')
-
-                if inp == 'Y':  break
-                else: print('\n' + 'Invalid Input.' + '\n')
-    
     else:
 
-        # If unifinID is false, group will be a tuple
-        # Gets letter code and client code from group
+        # If there is no sif Value for the group
+        # we don't need to check it, so returns group
 
-        letterCode = group[0]
-        ClientCode = group[1]        
+        return dfGroup
 
-        # Sets sif values for N001, N002, N002S, N021, N021S clients
-        # and blanks for groups other than the mentioned above.
+    dfGroup['PatientName'] = sifValue
+
+    # converts PatientName column to float64
+
+    dfGroup['PatientName'] = pd.to_numeric(dfGroup['PatientName']).astype('float64')
+
+    # Sets value of Column HospitalAddress
+
+    dfGroup['HospitalAddress'] = dfGroup['AmountDue'] * dfGroup['PatientName']
+
+    # Compares HospitalAddress and 1PayOffer (Same working as Filler15)
+
+    difference = abs(dfGroup['HospitalAddress'] - dfGroup['1PayOffer']) <= 0.01
+
+    # convert HospitalAddress column to four decimal places
+
+    dfGroup['HospitalAddress'] = dfGroup['HospitalAddress'].apply(lambda x: round(x, 4))
+
+    # Checks if sif Value is proper for this specific group
+
+    if difference.all(): return dfGroup
+
+    # if not, sif value needs to be updated
+
+    else:
+
+        print('\n' + 'Filler15 not minimized, Enter sif Values for:', group)
 
         if letterCode in ['N001', 'N002', 'N002S']:
 
-            sifValue = SifRules(('N002', ClientCode))
+            sifValue = UpdateSif(('N002', ClientCode))
 
         elif letterCode in ['N021', 'N021S']:
 
-            sifValue = SifRules(('N021', ClientCode))
-
-        else:
-
-            # If there is no sif Value for the group
-            # we don't need to check it, so returns group
-
-            return dfGroup
+            sifValue = UpdateSif(('N021', ClientCode))
 
         dfGroup['PatientName'] = sifValue
 
@@ -329,55 +315,19 @@ def SetSifValues1(unifinID, group, dfGroup):
 
         dfGroup['PatientName'] = pd.to_numeric(dfGroup['PatientName']).astype('float64')
 
+        # convert PatientName column to four decimal places
+
+        dfGroup['PatientName'] = dfGroup['PatientName'].apply(lambda x: round(x, 4))
+
         # Sets value of Column HospitalAddress
 
         dfGroup['HospitalAddress'] = dfGroup['AmountDue'] * dfGroup['PatientName']
-
-        # Compares HospitalAddress and 1PayOffer (Same working as Filler15)
-
-        difference = abs(dfGroup['HospitalAddress'] - dfGroup['1PayOffer']) <= 0.01
 
         # convert HospitalAddress column to four decimal places
 
         dfGroup['HospitalAddress'] = dfGroup['HospitalAddress'].apply(lambda x: round(x, 4))
 
-        # Checks if sif Value is proper for this specific group
-
-        if difference.all(): return dfGroup
-
-        # if not, sif value needs to be updated
-
-        else:
-
-            print('\n' + 'Filler15 not minimized, Enter sif Values for:', group)
-
-            if letterCode in ['N001', 'N002', 'N002S']:
-
-                sifValue = UpdateSif(('N002', ClientCode))
-
-            elif letterCode in ['N021', 'N021S']:
-
-                sifValue = UpdateSif(('N021', ClientCode))
-
-            dfGroup['PatientName'] = sifValue
-
-            # converts PatientName column to float64
-
-            dfGroup['PatientName'] = pd.to_numeric(dfGroup['PatientName'], errors='coerce').astype('float64')
-
-            # convert PatientName column to four decimal places
-
-            dfGroup['PatientName'] = dfGroup['PatientName'].apply(lambda x: round(x, 4))
-
-            # Sets value of Column HospitalAddress
-
-            dfGroup['HospitalAddress'] = dfGroup['AmountDue'] * dfGroup['PatientName']
-
-            # convert HospitalAddress column to four decimal places
-
-            dfGroup['HospitalAddress'] = dfGroup['HospitalAddress'].apply(lambda x: round(x, 4))
-
-    return dfGroup
+        return dfGroup
 
 
 #################################################################

@@ -296,92 +296,33 @@ def LetteringMail(mailFile, curr_dir, curr_date, prep):
 
     ###################################################################
     ##                                                               ##
-    ##   Splits data in groups based on criteria to get sif values   ##
+    ##    Splits data in groups based on LetterCode & ClientCode:    ##
+    ##                 Join groups together after:                   ##
     ##                                                               ##
-    ##       1. Groups that get their sif values by unifinID         ##
-    ##      2. Groups that get their sif values by ClientCode        ##
+    ##     1. Assigning sif value to each group in 'PatientName'     ##
+    ##       2. Calculating 'HospitalAddress', 'HospitalName',       ##
+    ##                        'HospitalPhone'                        ##
     ##                                                               ##
     ###################################################################
 
 
     print(section1)
     print('Fetching Sif Values & computing values of:'.center(60) + '\n')
-    print('PatientName, Hospital Address'.center(60))
+    print('PatientName, HospitalAddress'.center(60))
     print('HospitalName, HospitalPhone'.center(60))
 
-    # Sets unifinID as index
+    time.sleep(2)
 
-    df.set_index('UnifinID', inplace=True)
+    for group, dfGroup in df.groupby(['LetterCode', 'ClientCode']):
 
-    # Index Values of accounts that are cavalry
+        dfGroup = sif.SetSifValues1(group, dfGroup)
 
-    cavalry = df[df['ClientCode'].str[:3] == 'CAV'].index
+        updatedGroups.append(dfGroup)
 
-    # Cavalry Dataframe
-
-    dfCAV = df.loc[cavalry]
-
-    # Gets the rows and columns of Cavalry Dataframe
-
-    cavRows = dfCAV.shape[0]
-
-    # Dataframe other than cavalry
-
-    dfOther = df[~df.index.isin(cavalry)]
-
-    # Gets the rows and columns of Other Clients Dataframe
-
-    otherRows = dfOther.shape[0]
-
-    # Sets sif value for cavalry dataframe First argument passed
-    # is unifinID set to True because sif values must be accessed
-    # using Unifin IDs.
-
-    if not cavRows == 0:
-
-        # Creating a dictionary which contains unifinID as keys
-        # & values are tuple containing LetterCode & ClientCode
-
-        group = {}
-
-        for index, row in dfCAV.iterrows():
-
-            group[index] = (row['LetterCode'], row['ClientCode'])
-
-        dfCAV = sif.SetSifValues1(True, group, dfCAV)
-
-        updatedGroups = [dfCAV]
-    
-    else:
-
-        updatedGroups = []
-
-
-    ###################################################################
-    ##                                                               ##
-    ##       For Groups that get their sif value by ClientCode       ##
-    ##    Splits data in groups based on LetterCode & ClientCode:    ##
-    ##                 Join groups together after:                   ##
-    ##                                                               ##
-    ##             1. Assigning sif value to each group              ##
-    ##                                                               ##
-    ###################################################################
-
-
-    # More on sif Columns --> SifValues.py
-
-    if not otherRows == 0:
-
-        for group, dfGroup in dfOther.groupby(['LetterCode', 'ClientCode']):
-
-            dfGroup = sif.SetSifValues1(False, group, dfGroup)
-
-            updatedGroups.append(dfGroup)
-
-        df = pd.concat(updatedGroups)
+    df = pd.concat(updatedGroups)
 
     
-    # --------------Calculate HospitalPhone and HospitalAddress--------------- #
+    # --------------Calculate HospitalPhone and HospitalName--------------- #
 
 
     df = sif.SetSifValues2(df)
@@ -392,23 +333,14 @@ def LetteringMail(mailFile, curr_dir, curr_date, prep):
 
     print(section1)
     print('Computing Values of Check Columns:'.center(60) + '\n')
-    print('SettlementDueDate, Filler15, Filler16'.center(60))
-    print('ReceiptNumber, TransactionDate, TransactionAmount'.center(60))
+    print('SettlementDueDate, Filler15'.center(60))
+    print('Filler16, ReceiptNumber'.center(60))
+    print('TransactionDate, TransactionAmount')
     print('TransactionAcceptedAs, Filler31'.center(60))
 
+    time.sleep(2)
+
     df = EightColumns(df)
-
-
-    # ------------Removing UnifinID as Index and setting up column------------ #
-
-
-    # Creates a new dataframe with index reset
-
-    df.reset_index(inplace=True)
-
-    # Changes dataframe to its desired order
-
-    df = df[colNames]
 
 
     # ------------------QA & Cleaning of Lettering Mail File------------------- #

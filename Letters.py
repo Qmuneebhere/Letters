@@ -15,23 +15,6 @@ import TLO as t
 section1 = '\n\n' + '***********************************************************' + '\n\n'
 
 
-###########################################################################################
-###########################################################################################
-
-
-# If Lettering Mail file is prepared manually, set prepped to Y
-
-prepped = 'Y'
-
-# If file is coborrower set cobor to Y
-
-cobor = 'N'
-
-
-###########################################################################################
-###########################################################################################
-
-
 # ----------------------------------Gets today's date------------------------------------ #
 
 
@@ -91,7 +74,7 @@ else:
 ###########################################################################################
 
 
-df = lm.LetteringMail(fd.mailFile, fd.curr_dir, curr_date, prepped)
+df = lm.LetteringMail(fd.mailFile, fd.curr_dir, curr_date, fd.prepped)
 
 
 # -------------------------Asks user for Creating Pivot Table File----------------------- #
@@ -179,7 +162,7 @@ print('Import Data file is ready.'.center(60))
 ###########################################################################################
 
 
-dfTLO = t.PrepareTLO(dfApproved, cobor)
+dfTLO = t.PrepareTLO(dfApproved, fd.cobor)
 
 
 # -----------------------Creates TLO folder administration drive------------------------- #
@@ -263,7 +246,7 @@ if fd.mapEDI == 'Y':
         
         else: print('\n' + 'Get files ready ASAP.')
 
-    fd.MoveFilesEDI(1, fileType)
+    fd.MoveFilesEDI(1, fd.suffix)
 
 
 # -------------------------------Moves csv File for job---------------------------------- #
@@ -303,7 +286,7 @@ if fd.mapEDI == 'Y':
         
         else: print('\n' + 'Get Auto File ready ASAP.')
 
-    fd.MoveFilesEDI(2, fileType)
+    fd.MoveFilesEDI(2, fd.suffix)
 
 
 # ------------------------------Moves final Files to EDI--------------------------------- #
@@ -321,6 +304,6 @@ if fd.mapEDI == 'Y':
         
         else: print('\n' + 'Get Files ready ASAP.')
 
-    fd.MoveFilesEDI(3, fileType)
+    fd.MoveFilesEDI(3, fd.suffix)
 
     print(section1)

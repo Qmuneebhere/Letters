@@ -57,6 +57,10 @@ def TLOData(ADRList, cobor):
     
     dfTLO = pd.read_sql(queryTLO, engine, dtype=str)
 
+    # Close the connection after Fetching TLO.
+
+    engine.dispose()
+
     return dfTLO
 
 

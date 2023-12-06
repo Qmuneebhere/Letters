@@ -23,6 +23,18 @@ adminDrive = 'N'
 
 user = 'MUNEEB'
 
+# If file is coborrower set cobor to Y
+
+cobor = 'N'
+
+# If Lettering Mail file is prepared manually, set prepped to Y
+
+prepped = 'N'
+
+# Cobor Files are prepared Manually
+
+if cobor == 'Y': prepped = 'Y'
+
 
 ###########################################################################################
 # ---------------------------------- Current Date info ---------------------------------- #
@@ -32,6 +44,10 @@ user = 'MUNEEB'
 # Current Date
 
 currDate = datetime.date.today()
+
+# Current date in format mm/dd/yyyy
+
+curr_date = currDate.strftime('%m/%d/%Y')
 
 # Current Day, Month and Year in dd, mm, yyyy format
 
@@ -168,8 +184,10 @@ if suffix == 'b':
     mailFile = f'Lettering-Mail-{cYear}-{cMonth}-{cDay}.csv'
 
 else: 
+
+    if cobor == 'Y': mailFile = f'Lettering-Mail-{cYear}-{cMonth}-{cDay}{suffix}-Cobor.csv'
     
-    mailFile = f'Lettering-Mail-{cYear}-{cMonth}-{cDay}{suffix}.csv'
+    else: mailFile = f'Lettering-Mail-{cYear}-{cMonth}-{cDay}{suffix}.csv'
 
 # Name of Templates required for Lettering procedure
 
@@ -179,11 +197,15 @@ tempText = 'DelAccounts.txt'
 
 # Name of current Workbook file
 
-workbookFile = f'Unifin-PCI_{currFolderName}{suffix}.xlsx'
+if cobor == 'Y': workbookFile = f'Unifin-PCI_{currFolderName}{suffix}-Cobor.xlsx' 
+
+else: workbookFile = f'Unifin-PCI_{currFolderName}{suffix}.xlsx'
 
 # Name of current csv file
 
-csvFile = f'Unifin-PCI_{currFolderName}{suffix}.csv'
+if cobor == 'Y': csvFile = f'Unifin-PCI_{currFolderName}{suffix}-Cobor.csv'
+
+else: csvFile = f'Unifin-PCI_{currFolderName}{suffix}.csv'
 
 TLOFile = 'TLO-Address-' + cMonth + cDay + cYear + suffix + '.csv'
 TLOAppend = 'TLO-Address-' + cMonth + cDay + cYear + suffix + '-append.csv'

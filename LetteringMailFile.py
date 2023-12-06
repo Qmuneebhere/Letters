@@ -153,7 +153,7 @@ def LetteringMail(mailFile, curr_dir, curr_date, prep):
                 'DebtType', 'InitialNoticeFlag', 'SendGLBNoticeFlag', 'OOSFlag',
                 'CRFlag', 'CRNegFlag', 'Sum3PayOffer', 'Sum12PayOffer', 'EmailAddress',
                 'ConsumerName', 'Address1', 'Address2', 'City', 'State', 'Zip',
-                'ExperianAddress', 'Filler8', 'Client Name', 'DebtDescription',
+                'ExperianAddress', 'BlockNCOA', 'Client Name', 'DebtDescription',
                 'CurrentCreditor', 'OriginalCreditor', 'ServicerClientID',
                 'Filler10', 'COAmountDue', 'ChargeOffDate', 'AmountPaidSinceCO',
                 'LastPaymentAmount', 'LastPaymentDate', 'AmountDue', 'PrincipleBalance',
@@ -168,8 +168,8 @@ def LetteringMail(mailFile, curr_dir, curr_date, prep):
                 '40DaysLastLetter', 'Filler30', 'Filler31', 'DOFD', 'DateofAccident', 'AccidentInfo', 'County',
                 'StateofAccident', 'CRDeletionFlag', 'Filler38', 'InterestPostChargeOff', 'ServiceChargesPostChargeOff',
                 'CollectonCostPostChargeOff', 'InterestAfterPlacement', 'ServiceChargesAfterPlacement',
-                'CollectonCostAfterPlacement', 'LastPayDate', 'Filler39', 'Filler40', 'DBR_PRIORITY', 'Letters_SIF_INV',
-                'Letter1', 'Letter2', 'send_letter']
+                'CollectonCostAfterPlacement', 'LastPayDate', 'PlacementDate', 'Filler39', 'Filler40', 
+                'DBR_PRIORITY', 'Letters_SIF_INV', 'Letter1', 'Letter2', 'send_letter']
 
     dataTypes = {'LetterCode': 'object', 'LetterDate': 'object', 'UnifinID': 'object',
                  'ClientReferenceNumber': 'object', 'OriginalAccountID': 'object',
@@ -181,7 +181,7 @@ def LetteringMail(mailFile, curr_dir, curr_date, prep):
                  'EmailAddress': 'object', 'ConsumerName': 'object',
                  'Address1': 'object', 'Address2': 'object',
                  'City': 'object', 'State': 'object', 'Zip': 'object',
-                 'ExperianAddress': 'int64', 'Filler8': 'float64',
+                 'ExperianAddress': 'int64', 'BlockNCOA': 'object',
                  'Client Name': 'object', 'DebtDescription': 'object',
                  'CurrentCreditor': 'object', 'OriginalCreditor': 'object',
                  'ServicerClientID': 'float64', 'Filler10': 'float64',
@@ -214,7 +214,7 @@ def LetteringMail(mailFile, curr_dir, curr_date, prep):
                  'InterestPostChargeOff': 'object', 'ServiceChargesPostChargeOff': 'object',
                  'CollectonCostPostChargeOff': 'object', 'InterestAfterPlacement': 'object',
                  'ServiceChargesAfterPlacement': 'object', 'CollectonCostAfterPlacement': 'object',
-                 'LastPayDate': 'object', 'Filler39': 'float64', 'Filler40': 'float64',
+                 'LastPayDate': 'object', 'PlacementDate': 'object', 'Filler39': 'float64', 'Filler40': 'float64',
                  'DBR_PRIORITY': 'object', 'Letters_SIF_INV': 'object', 'Letter1': 'object',
                  'Letter2': 'object', 'send_letter': 'object'}
 

@@ -73,7 +73,9 @@ def SifRules(group):
 
         if math.isnan(ruleDict[group]):
 
-            print('\n' + 'Sif was blank for:', group)
+            print(section1)
+
+            print(f'Sif was blank for: {group}'.center(60))
 
             return UpdateSif(group)
 
@@ -86,7 +88,9 @@ def SifRules(group):
 
     else:
 
-        print('\n' + 'Client Code does not exist in file: ', group[1])
+        print(section1)
+
+        print(f'Client Code does not exist in file: {group[1]}'.center(60))
 
         return AddSif(group)
 
@@ -299,7 +303,9 @@ def SetSifValues1(group, dfGroup):
 
     else:
 
-        print('\n' + 'Filler15 not minimized, Enter sif Values for:', group)
+        print(section1)
+
+        print(f'Filler15 not minimized, Enter sif Values for: {group}'.center(60))
 
         if letterCode in ['N001', 'N002', 'N002S']:
 

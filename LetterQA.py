@@ -83,10 +83,8 @@ def CheckNumeric(df, columnName, numType):
     if blankInColumn > 0:
 
         print(section1)
-
-        print('There are blanks/NULL in ' + columnName)
-
-        print('\n' + 'Count: ' + str(blankInColumn))
+        print(f'There are blanks/NULL in {columnName}'.center(60) + '\n')
+        print(f'Count: {blankInColumn}'.center(60))
 
         time.sleep(2)
 
@@ -99,10 +97,8 @@ def CheckNumeric(df, columnName, numType):
         if zeroInColumn > 0:
 
             print(section1)
-
-            print('There are zeros or negative in ' + columnName)
-
-            print('\n' + 'Count: ' + str(zeroInColumn))
+            print(f'There are zeros or negative in {columnName}'.center(60) + '\n')
+            print(f'Count: {zeroInColumn}'.center(60))
 
             time.sleep(2)
 
@@ -121,10 +117,8 @@ def OneInColumn(df, columnName):
     if notOneInColumn > 0:
 
         print(section1)
-
-        print('There are values other than 1 in ' + columnName)
-
-        print('\n' + 'Count: ' + str(notOneInColumn))
+        print(f'There are values other than 1 in {columnName}'.center(60) + '\n')
+        print(f'Count: {notOneInColumn}'.center(60))
 
         time.sleep(2)
 
@@ -208,11 +202,12 @@ def FullQA(df, curr_date):
         inp = input("Wanna see the LetterCodes in today's file (Y/N): ")
 
         if inp == 'Y' or inp == 'N': break
-        else: print('\n' + 'Invalid input.')
+
+        else: print('\nInvalid input.')
 
     if inp == 'Y':
 
-        print('\n' + "LetterCodes in Today's File: " + '\n')
+        print("\nLetterCodes in Today's File:\n")
 
         uniqueCodes = df['LetterCode'].unique()
 
@@ -233,11 +228,11 @@ def FullQA(df, curr_date):
         inp = input("Wanna see the ClientCodes in today's file (Y/N): ")
 
         if inp == 'Y' or inp == 'N': break
-        else: print('\n' + 'Invalid input.')
+        else: print('\nInvalid input.')
 
     if inp == 'Y':
 
-        print('\n' + "ClientCodes in Today's File: " + '\n')
+        print("\nClientCodes in Today's File:\n")
 
         # Gets a list of unique ClientCodes in today's file
         # Prints List with 5 codes in each line
@@ -247,7 +242,8 @@ def FullQA(df, curr_date):
             forPrint = ', '.join(uniqueClients[i:i+5])
             print(forPrint.center(60))
 
-        print('\n' + ("Total Client Codes: " + str(len(uniqueClients))).center(60))
+        print('\n')
+        print(f'Total Client Codes: {len(uniqueClients)}'.center(60))
     
 
     # -----------------------------------QA-------------------------------- #

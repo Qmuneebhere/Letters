@@ -141,13 +141,17 @@ while True:
 
 dfApproved = a.NewData(df, deleteFile, approval)
 
-# Name for File with approved accounts only
+print(section1)
 
-importFile = 'Import_Data_' + fd.currFolderName + fd.suffix + '.csv'
+print(f'Approved Accounts: {dfApproved.shape[0]}'.center(60))
+
+
+# --------------------------------Creates Import file Data------------------------------- #
+
 
 # Saves data with approved accounts only
 
-dfApproved.to_csv(fd.curr_dir + importFile, index=False, header=False)
+dfApproved.to_csv(fd.curr_dir + fd.importFile, index=False, header=False)
 
 print(section1)
 
@@ -157,12 +161,13 @@ print('Import Data file is ready.'.center(60))
 ###########################################################################################
 ##                                                                                       ##
 ##            This function generates TLO file, Matches ConsumerName in both             ##
-##                  TLO and raw file, saves TLO file in current folder.                  ##
+##            TLO and raw file, saves TLO file in current folder & returns a             ##
+##                   series of UnifinIDs that have experian address 0.                   ##
 ##                                                                                       ##
 ###########################################################################################
 
 
-dfTLO = t.PrepareTLO(dfApproved, fd.cobor)
+expZero = t.PrepareTLO(dfApproved, fd.cobor)
 
 
 # -----------------------Creates TLO folder administration drive------------------------- #
@@ -219,6 +224,20 @@ if fd.mapAdmin == 'Y':
         else:
 
             print('\n' + 'Invalid Input.')
+
+
+# -------------------Replaces Addresses with verified Address in TLO--------------------- #
+
+
+dfverifiedADR = t.ReplaceAddress(dfApproved, expZero)
+
+# Saves Verified Address file in current directory
+
+dfverifiedADR.to_csv(fd.curr_dir + fd.veriADRFile, index=False, header=False)
+
+print(section1)
+
+print('Verified Address file is ready.'.center(60))
 
 
 # ----------------------------Creates Today's folder in EDI------------------------------ #

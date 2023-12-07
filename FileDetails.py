@@ -215,6 +215,9 @@ autoFile = 'Unifin-PCI_' + currFolderName + suffix + '_Auto.csv'
 rejectFile = 'Rejected_Accounts_' + currFolderName + suffix + '.txt'
 mismatchFile = 'Mismatch_Accounts_' + currFolderName + suffix + '.txt'
 
+importFile = 'Import_Data_' + currFolderName + suffix + '.csv'
+veriADRFile = 'Verified_ADR_' + currFolderName + suffix + '.csv'
+
 
 # -----------------------------Moves File in created Folder------------------------------ #
 

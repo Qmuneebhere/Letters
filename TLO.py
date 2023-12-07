@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import LetteringMailFile as lm 
 from sqlalchemy import create_engine
 import FileDetails as fd
 
@@ -233,10 +234,118 @@ def PrepareTLO(df, cobor):
 
     TLONameCheck(df, dfTLO)
 
+    # Returns the series of index with experian Address 0
+
+    return x
+
+
+##########################################################################################
+##                                                                                      ##
+##          This function reads TLO append, modifies and return new dataframe           ##
+##                                                                                      ##
+##########################################################################################
+
+def PrepareTLOAppend():
+
+    # Columns for Original and Verified Addresses
+
+    ADRorig = ['ADDRESS LINE 1', 'ADDRESS LINE 2', 
+            'CITY', 'STATE', 'ZIP']
+
+    ADRveri = ['TloAddressLine1', 'TloAddressLine2', 'TloAddressCity',
+            'TloAddressState', 'TloAddressZip']
+
+    # Reads TLO Append file
+
+    dfTLO = pd.read_csv(f'{fd.curr_dir}{fd.TLOAppend}', dtype=str)
+
+    # Sets Account ID as index
+
+    dfTLO.set_index('ACCOUNT ID', inplace=True)
+
+    # Gets count of Total Accounts
+
+    totalCount = dfTLO.shape[0]
+
+    # Boolean series for Blank Addresses
+
+    blanks = dfTLO['TloAddressLine1'].isna()
+
+    # Count of Blank Addresses
+
+    blankCount = dfTLO[blanks].shape[0]
+
+    print(section1)
+
+    print(f'Total Accounts sent to TLO: {totalCount}'.center(60) + '\n')
+    print(f'Blank Addresses received: {blankCount}'.center(60))
+
+    # Replacing Addresses if blank
+
+    for x in range(5):
+    
+        dfTLO.loc[blanks, ADRveri[x]] = dfTLO.loc[blanks, ADRorig[x]]
+    
+    # Removes extra columns
+
+    dfTLO = dfTLO[ADRveri]
+
+    # New column names
+
+    newCol = ['Address1', 'Address2', 'City', 'State', 'Zip']
+
+    # Rename Dictionary
+
+    renameDict = dict(zip(ADRveri, newCol))
+
+    # Renames the address columns
+
+    dfTLO.rename(columns=renameDict, inplace=True)
+
+    # Renames the index of dataframe
+
+    dfTLO.index.name = 'UnifinID'
+
     return dfTLO
 
 
+##########################################################################################
+##                                                                                      ##
+##             This function takes approved dataframe, modified TLO append              ##
+##              Replaces address in approved dataframe and returns new df               ##
+##                                                                                      ##
+##########################################################################################
 
+
+def ReplaceAddress(df, replaceIDs):
+
+    # Gets modified TLO file
+
+    dfTLO = PrepareTLOAppend()
+
+    # Sets UnifinID as Index in approved dataframe
+
+    df.set_index('UnifinID', inplace=True)
+
+    # Column names
+
+    cols = ['Address1', 'Address2', 'City', 'State', 'Zip']
+
+    # Replaces Addresses of 0 experian address in approved df
+
+    for col in cols:
+    
+        df.loc[replaceIDs, col] = dfTLO.loc[replaceIDs, col]
+    
+    # resets index of dataframe
+    
+    df.reset_index(inplace=True)
+
+    # Re-orders columns
+
+    df = df[lm.colNames]
+    
+    return df
 
 
 

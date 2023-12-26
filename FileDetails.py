@@ -1,6 +1,6 @@
 import datetime
 import shutil
-import os
+import os, time
 
 
 section1 = '\n\n' + '***********************************************************' + '\n\n'
@@ -86,7 +86,7 @@ Documents = f'C:\\Users\\{user}\\OneDrive - GCS Inc\\Documents\\'
 
 # Current Working Directory for Letters
 
-curr_dir = f'{Documents}Unifin\\Letters\\\\{cYear}\\{cMonthName}\\{currFolderName}\\'
+letters_dir = f'{Documents}Unifin\\Letters\\'
 
 
 ###########################################################################################
@@ -136,6 +136,16 @@ if mapAdmin == 'Y':
 
     LM_Dir = f'{adminDrive}:\\FTP_Transfers\\Incoming\\Unprocessed\\Unifin Inc\\'
 
+    # Path to processed folder in administration
+
+    processed_Dir = f'{adminDrive}:\\FTP_Transfers\\Incoming\\Processed\\Unifin Inc\\'
+
+    # Path to vendor PCI folder
+
+    vendor_Dir = f'{adminDrive}:\\Vendor_Related\\Lettering\\PCI\\Sent Files\\'
+
+    currPCI_Dir = f'{vendor_Dir}{currFolderName}\\'
+
     # Path to TLO Address folder in vendor related
 
     currTLO_dir = f'{adminDrive}:\\Vendor_Related\\Skip Tracing\\' \
@@ -171,6 +181,8 @@ while True:
 
     else: print('\n' + 'Invalid Input.')
 
+curr_dir = f'{letters_dir}{cYear}\\{cMonthName}\\{currFolderName}\\{suffix}-File\\'
+
 
 ###########################################################################################
 # ------------------- Names of files required for Lettering procedure ------------------- #
@@ -194,6 +206,12 @@ else:
 tempWorkbookFile = 'WkbTemplate.xlsx'
 tempAutoFile = 'AutoTemplate.csv'
 tempText = 'DelAccounts.txt'
+
+# Names of RegE File
+
+oldRegE = f'Letters-RegE_{cYear}-{cMonth}-{cDay}-N039.csv'
+
+newRegE = f'Unifin-PCI_RegE_{cYear}-{cMonth}-{cDay}-N039.csv'
 
 # Name of current Workbook file
 
@@ -398,3 +416,26 @@ def CopyCsvForJob():
     shutil.copy(cCsv, sCsv)
 
 
+# -----------------------------Copies RegE File to VendorPCI----------------------------- #
+
+
+def CopyRegE():
+
+    os.makedirs(currPCI_Dir)
+
+    while True:
+
+        if not os.path.exists(processed_Dir + newRegE):
+
+            time.sleep(900)
+        
+        else: 
+
+            shutil.copy(processed_Dir + newRegE, currPCI_Dir + newRegE)
+
+            print(section1)
+
+            print('You can send RegE file to FTP'.center(60))
+            
+            break
+    

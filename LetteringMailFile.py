@@ -298,15 +298,75 @@ def LetteringMail(mailFile, curr_dir, curr_date, prep):
     print('PatientName, HospitalAddress'.center(60))
     print('HospitalName, HospitalPhone'.center(60))
 
-    time.sleep(2)
+    # Sets unifinID as index
 
-    updatedGroups = []
+    df.set_index('UnifinID', inplace=True)
 
-    for group, dfGroup in df.groupby(['LetterCode', 'ClientCode']):
+    # Index Values of accounts that are TBI
 
-        dfGroup = sif.SetSifValues1(group, dfGroup)
+    TBIAcc = df[df['ClientCode'].str[:2] == 'TB'].index
 
-        updatedGroups.append(dfGroup)
+    # TBI Dataframe
+
+    dfTBI = df.loc[TBIAcc]
+
+    # Gets the rows and columns of Cavalry Dataframe
+
+    TBIRows = dfTBI.shape[0]
+
+    # Dataframe other than TBI
+
+    dfOther = df[~df.index.isin(TBIAcc)]
+
+    # Gets the rows and columns of Other Clients Dataframe
+
+    otherRows = dfOther.shape[0]
+
+    # Sets sif value for cavalry dataframe First argument passed
+    # is unifinID set to True because sif values must be accessed
+    # using Unifin IDs.
+
+    if not TBIRows == 0:
+
+        # Creating a dictionary which contains unifinID as keys
+        # & values are tuple containing LetterCode & ClientCode
+
+        group = {}
+
+        for index, row in dfTBI.iterrows():
+
+            group[index] = (row['LetterCode'], row['ClientCode'])
+
+        dfTBI = sif.SetSifValues1(True, group, dfTBI)
+
+        updatedGroups = [dfTBI]
+
+    else:
+
+        updatedGroups = []
+
+
+    ###################################################################
+    ##                                                               ##
+    ##       For Groups that get their sif value by ClientCode       ##
+    ##    Splits data in groups based on LetterCode & ClientCode:    ##
+    ##                 Join groups together after:                   ##
+    ##                                                               ##
+    ##             1. Assigning sif value to each group              ##
+    ##                                                               ##
+    ###################################################################
+
+
+    # More on sif Columns --> SifValues.py
+
+    if not otherRows == 0:
+
+        for group, dfGroup in dfOther.groupby(['LetterCode', 'ClientCode']):
+
+            dfGroup = sif.SetSifValues1(False, group, dfGroup)
+
+            updatedGroups.append(dfGroup)
+
 
     df = pd.concat(updatedGroups)
 
@@ -330,6 +390,18 @@ def LetteringMail(mailFile, curr_dir, curr_date, prep):
     time.sleep(2)
 
     df = EightColumns(df)
+
+
+    # ------------Removing UnifinID as Index and setting up column------------ #
+
+
+    # Creates a new dataframe with index reset
+
+    df.reset_index(inplace=True)
+
+    # Changes dataframe to its desired order
+
+    df = df[colNames]
 
 
     # ------------------QA & Cleaning of Lettering Mail File------------------- #

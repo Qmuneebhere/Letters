@@ -15,6 +15,33 @@ import TLO as t
 section1 = '\n\n' + '***********************************************************' + '\n\n'
 
 
+# ----------------------------------Renames RegE File------------------------------------ #
+
+
+if fd.suffix == 'b':
+
+    print(section1)
+
+    while True:
+
+        print('Do you want to process RegE file?'.center(60) + '\n')
+
+        rege = input('(Y/N): ')
+
+        if rege == 'Y' or rege == 'N': break
+        else: print('\nInvalid Input.\n')
+
+    if fd.mapAdmin == 'Y' and rege == 'Y':
+
+        if os.path.exists(fd.LM_Dir + fd.oldRegE):
+
+            os.rename(fd.LM_Dir + fd.oldRegE, fd.LM_Dir + fd.newRegE)
+
+            print(section1)
+
+            print('RegE File has been renamed.'.center(60))
+
+
 # ----------------------------------Gets today's date------------------------------------ #
 
 
@@ -325,4 +352,12 @@ if fd.mapEDI == 'Y':
 
     fd.MoveFilesEDI(3, fd.suffix)
 
-    print(section1)
+
+# ------------------------------Copies RegE files to PCI--------------------------------- #
+
+
+if fd.suffix == 'b' and rege == 'Y':
+
+    fd.CopyRegE()
+
+print(section1)

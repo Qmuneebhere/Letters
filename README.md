@@ -27,8 +27,8 @@ Generates a workbook file containing all data including checkpoints for review p
 
 ### Address Verification:
 
-After approval, debtor addresses undergo systematic verification to ensure the precise delivery of collection letters. This verification process involves the creation of a CSV file containing necessary debtor details, which is then forwarded to an external vendor. Subsequently, a file containing the verified addresses is received and integrated into the original dataset.
+After approval, debtor addresses undergo systematic verification to ensure the precise delivery of collection letters. This verification process involves the creation of a CSV file containing necessary debtor details, which is then forwarded to an external vendor (TransUnion/Experian). Subsequently, a file containing the verified addresses is received and integrated into the original dataset.
 
 ### Address Cleaning and Concluding Data: 
 
-Additional data cleaning is performed by examining each address field against specified criteria. Any account that does not meet these criterias is removed, also accounts having exact duplicate addresses are also removed. Resulting in final CSV file which contains accurate debtor account information ready for distribution.
+Additional data cleaning is performed by examining each address field against specified criteria. Any account that does not meet these criterias is removed, also accounts having exact duplicate addresses are also removed. Resulting in final CSV file which contains accurate debtor account information ready for PCI Group to print and mail.

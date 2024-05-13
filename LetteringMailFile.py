@@ -179,8 +179,8 @@ def EightColumns(df):
     # and absolute value of ItemizationPmtsCredits equals ItemizationCurrBalance, if yes
     # Assigns 1 to Filler31
 
-    df.loc[df['ItemizationBalance'] + df['ItemizationInterest'] + df['ItemizationFees'] -
-           abs(df['ItemizationPmtsCredits']) - df['ItemizationCurrBalance'] <= 0.01, 'Filler31'] = 1
+    df.loc[abs(df['ItemizationBalance'] + df['ItemizationInterest'] + df['ItemizationFees'] -
+           abs(df['ItemizationPmtsCredits']) - df['ItemizationCurrBalance']) <= 0.01, 'Filler31'] = 1
 
     return df
 

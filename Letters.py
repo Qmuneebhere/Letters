@@ -3,43 +3,18 @@ import os
 import math
 import csv
 import time
+import glob
 import numpy as np
 import pandas as pd
 import FileDetails as fd
 import LetteringMailFile as lm
 import PivotTable as pt
+import GetMismatch as gm
 import Approval as a
 import TLO as t
 
 
 section1 = '\n\n' + '***********************************************************' + '\n\n'
-
-
-# ----------------------------------Renames RegE File------------------------------------ #
-
-
-if fd.suffix == 'b':
-
-    print(section1)
-
-    while True:
-
-        print('Do you want to process RegE file?'.center(60) + '\n')
-
-        rege = input('(Y/N): ')
-
-        if rege == 'Y' or rege == 'N': break
-        else: print('\nInvalid Input.\n')
-
-    if fd.mapAdmin == 'Y' and rege == 'Y':
-
-        if os.path.exists(fd.LM_Dir + fd.oldRegE):
-
-            os.rename(fd.LM_Dir + fd.oldRegE, fd.LM_Dir + fd.newRegE)
-
-            print(section1)
-
-            print('RegE File has been renamed.'.center(60))
 
 
 # ----------------------------------Gets today's date------------------------------------ #
@@ -335,6 +310,38 @@ if fd.mapEDI == 'Y':
     fd.MoveFilesEDI(2, fd.suffix)
 
 
+# -----------------------------Compares auto and csv files------------------------------- #
+
+
+mismatchList, merge, comparison = gm.GetMismatchAccounts()
+
+if mismatchList: mismatchCols = gm.MismatchInColumns(comparison)
+else:
+
+    print(section1)
+    print('No Mismatch found.'.center(60))
+
+
+# -----------------------------Further info on Mismatches-------------------------------- #
+
+
+if mismatchList:
+
+    print(section1)
+    print('Do you want further info on Mismatches?'.center(60))
+
+    while True:
+
+        inp = input('Y/N: ')
+
+        if inp == 'Y' or inp == 'N': break
+        else: print('\nInvalid Input.\n')
+
+    # Gets mismatches details
+
+    if inp == 'Y': gm.MismatchDetails(merge, mismatchCols, mismatchList)
+
+
 # ------------------------------Moves final Files to EDI--------------------------------- #
 
 
@@ -351,13 +358,3 @@ if fd.mapEDI == 'Y':
         else: print('\n' + 'Get Files ready ASAP.')
 
     fd.MoveFilesEDI(3, fd.suffix)
-
-
-# ------------------------------Copies RegE files to PCI--------------------------------- #
-
-
-if fd.suffix == 'b' and rege == 'Y':
-
-    fd.CopyRegE()
-
-print(section1)

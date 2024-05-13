@@ -119,7 +119,7 @@ def AddSif(group):
     # Takes both sif values as input from user
 
     inp1 = float(input('\n' + 'Enter the Letter1 value for ' + clientCode + ': '))
-    inp2 = float(input('\n' + 'Enter the Letter2 value for ' + clientCode + ': '))
+    inp2 = float(input('Enter the Letter2 value for ' + clientCode + ': '))
 
     # creates a new row as dictionary
 

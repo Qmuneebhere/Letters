@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime, date
 import shutil
 import os, time
 
@@ -41,13 +41,43 @@ if cobor == 'Y': prepped = 'Y'
 ###########################################################################################
 
 
-# Current Date
+print(section1)
 
-currDate = datetime.date.today()
+print('Welcome! Do you want to process for today?'.center(60) + '\n')
 
-# Current date in format mm/dd/yyyy
+while True:
 
-curr_date = currDate.strftime('%m/%d/%Y')
+    isToday = input('Y for today N for custom date: ')
+
+    if isToday == 'Y':
+
+        # Current Date
+
+        currDate = date.today()
+
+        # Current date in format mm/dd/yyyy
+
+        curr_date = currDate.strftime('%m/%d/%Y')
+
+        break
+
+    elif isToday == 'N': 
+        
+        strDate = input('\nEnter Date (mm-dd-yyyy): ')
+
+        # Current Date
+
+        currDate = datetime.strptime(strDate, '%m-%d-%Y')
+
+        # Current date in format mm/dd/yyyy
+
+        curr_date = currDate.strftime('%m/%d/%Y')
+
+        break
+    
+    else:
+
+        print('\nInvalid Input.\n')
 
 # Current Day, Month and Year in dd, mm, yyyy format
 
@@ -207,11 +237,9 @@ tempWorkbookFile = 'WkbTemplate.xlsx'
 tempAutoFile = 'AutoTemplate.csv'
 tempText = 'DelAccounts.txt'
 
-# Names of RegE File
+# Pattern for RegE Files
 
-oldRegE = f'Letters-RegE_{cYear}-{cMonth}-{cDay}-N039.csv'
-
-newRegE = f'Unifin-PCI_RegE_{cYear}-{cMonth}-{cDay}-N039.csv'
+patternRegE = f'Letters-*_{cYear}-{cMonth}-{cDay}-N03?.csv'
 
 # Name of current Workbook file
 
@@ -427,6 +455,9 @@ def CopyRegE():
 
         if not os.path.exists(processed_Dir + newRegE):
 
+            print(section1)
+            print('Searching for RegE files in processed folder.'.center(60))
+
             time.sleep(900)
         
         else: 
@@ -434,7 +465,6 @@ def CopyRegE():
             shutil.copy(processed_Dir + newRegE, currPCI_Dir + newRegE)
 
             print(section1)
-
             print('You can send RegE file to FTP'.center(60))
             
             break
